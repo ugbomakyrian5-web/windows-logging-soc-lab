@@ -67,7 +67,8 @@ Security log analysis revealed repeated Event ID 4625 failures originating from 
 **Key indicator**: High-frequency 4625 events from a single non-corporate source IP — the definitive brute-force signature in Windows Security logs.
 
 #### 📸 Screenshot 1 — Event ID 4625: Brute-Force Activity from 10.10.53.248
-<img width="1366" height="728" alt="Brute Force 4625" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/1_brute_force_4625.png" />
+<img width="1366" height="720" alt="image" src="https://github.com/user-attachments/assets/fbdb53cc-1dd2-42f6-92de-af63e870d5ae" />
+
 
 *Event ID 4625 — Source Network Address: 10.10.53.248, Workstation: b1465f — repeated failed logon attempts confirm brute-force activity*
 
@@ -86,7 +87,7 @@ Following the brute-force, Event ID 4624 with Logon Type 10 confirmed a successf
 **Key insight**: Logon ID is the backbone of Windows incident investigation. It transforms isolated events into a connected attack chain.
 
 #### 📸 Screenshot 2 — Event ID 4624: Successful RDP Login — Logon ID `0x183c36d`
-<img width="1366" height="728" alt="RDP Login 4624" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/2_rdp_login_4624_logon_id.png" />
+<img width="1366" height="726" alt="image" src="https://github.com/user-attachments/assets/b523e828-ed4d-430e-a466-4bba9133be08" />
 
 *Event ID 4624 — TargetUserName: Administrator, LogonType: 10, TargetLogonId: 0x183c36d — RDP compromise confirmed*
 
@@ -104,7 +105,7 @@ One minute after gaining access, the attacker created `svc_sysrestore` — a ser
 **Key indicator**: New account creation by an account whose Logon ID matches a preceding suspicious 4624 event — immediate escalation trigger.
 
 #### 📸 Screenshot 3 — Event ID 4720: `svc_sysrestore` Backdoor Account Created
-<img width="1366" height="728" alt="Backdoor Account 4720" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/3_backdoor_account_4720.png" />
+<img width="1366" height="720" alt="image" src="https://github.com/user-attachments/assets/666f434c-a2a1-41c5-bb3f-43cd1a5cae15" />
 
 *Event ID 4720 — New Account: svc_sysrestore — created at 10:54:58 PM, 1 minute after successful RDP login*
 
@@ -123,7 +124,7 @@ Within seconds of creation, `svc_sysrestore` was added to two privileged groups.
 **Key indicator**: 4720 immediately followed by 4732 within the same session — account creation + privilege assignment is a high-confidence persistence pattern.
 
 #### 📸 Screenshot 4 — Event ID 4732: `svc_sysrestore` Added to Remote Desktop Users + Backup Operators
-<img width="1366" height="728" alt="Privilege Escalation 4732" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/4_privilege_escalation_4732.png" />
+<img width="1366" height="720" alt="image" src="https://github.com/user-attachments/assets/e43f3ccd-0126-4ad8-845b-6fa40e85d3d5" />
 
 *Event ID 4732 — svc_sysrestore added to Remote Desktop Users and Backup Operators — persistent elevated access established*
 
@@ -143,22 +144,22 @@ Sysmon Event ID 1 captured `ckjg.exe` being spawned from `sarah.miller`'s Downlo
 **Key indicator**: Executable spawned from `\Downloads\` by browser process + unknown external domain + confirmed malware hash.
 
 #### 📸 Screenshot 5 — Sysmon Event ID 1: Google Chrome Identified as Sarah's Browser
-<img width="1366" height="728" alt="Chrome Browser Sysmon" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/5_sysmon_chrome_browser.png" />
+<img width="1366" height="728" alt="image" src="https://github.com/user-attachments/assets/7f57c562-673a-42dd-9198-d318e635fe85" />
 
 *Sysmon Event ID 1 — ParentImage: GoogleUpdater\138.0.7156.0\updater.exe confirms Google Chrome as Sarah's browser*
 
 #### 📸 Screenshot 6 — Sysmon Event ID 1: `ckjg.exe` Execution — Parent Confirmed as Chrome
-<img width="1366" height="728" alt="Malware Execution ckjg.exe" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/6_sysmon_ckjg_execution.png" />
+<img width="1366" height="731" alt="image" src="https://github.com/user-attachments/assets/483505d4-d0b7-40d7-b34c-7c7b3877f077" />
 
 *Sysmon Event ID 1 — ParentCommandLine: C:\Users\sarah.miller\Downloads\ckjg.exe — malware execution confirmed under sarah.miller context*
 
 #### 📸 Screenshot 7a — Sysmon Event ID 1: MD5 Hash of `ckjg.exe` Extracted
-<img width="1366" height="728" alt="Malware Hash" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/7a_sysmon_ckjg_hash.png" />
+<img width="1366" height="728" alt="image" src="https://github.com/user-attachments/assets/deef8566-db8e-47d3-8d46-61af5ee08f52" />
 
 *Sysmon Event ID 1 — MD5: 962D2A0880C5325328930B66BB4E2CF1 — hash submitted to VirusTotal for reputation check*
 
 #### 📸 Screenshot 7b — VirusTotal: `ckjg.exe` Confirmed MALWARE — Source URL Verified
-<img width="1366" height="728" alt="VirusTotal Malware Verdict" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/7b_virustotal_malware_verdict.png" />
+<img width="1366" height="728" alt="image" src="https://github.com/user-attachments/assets/fb5b21ee-1961-4119-871a-85d2513b9fe4" />
 
 *VirusTotal community — Nucleon Malprob verdict: MALWARE 100% — SRC URL: http://gettsveriff[.]com/bgj3/ckjg.exe confirmed*
 
@@ -176,7 +177,7 @@ Sysmon Event ID 11 captured `ckjg.exe` writing `DeleteApp.url` directly to the u
 **Key indicator**: File creation in `\Start Menu\Programs\Startup\` by a non-system process — any such event warrants immediate investigation regardless of filename.
 
 #### 📸 Screenshot 8 — Sysmon Event ID 11: `DeleteApp.url` Written to Startup Folder
-<img width="1366" height="728" alt="Startup Persistence" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/8_sysmon_startup_persistence.png" />
+<img width="1366" height="728" alt="image" src="https://github.com/user-attachments/assets/6c5d6a57-33e4-425b-bed2-61c48de05d8c" />
 
 *Sysmon Event ID 11 — Image: ckjg.exe → TargetFilename: \Startup\DeleteApp.url — startup persistence confirmed at 16:08:46 UTC*
 
@@ -199,12 +200,12 @@ Sysmon Event ID 3 captured an outbound connection from `ckjg.exe` to `193.46.217
 **Key indicator**: Outbound connection on non-standard port (7777) from a recently executed unknown process, resolving to a suspicious `.click` domain — immediate containment trigger.
 
 #### 📸 Screenshot 9 — Sysmon Event ID 3: C2 Connection to `193.46.217.4:7777`
-<img width="1366" height="728" alt="C2 Connection Sysmon Event 3" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/9_sysmon_c2_connection_event3.png" />
+<img width="1366" height="726" alt="image" src="https://github.com/user-attachments/assets/ea47754e-227e-411f-843c-bc3fe05557e0" />
 
 *Sysmon Event ID 3 — DestinationIp: 193.46.217.4, DestinationPort: 7777 — outbound C2 connection from ckjg.exe confirmed*
 
 #### 📸 Screenshot 10 — Sysmon Event ID 22: DNS Query Confirms C2 Domain `hkfasfsafg[.]click`
-<img width="1366" height="728" alt="C2 Domain DNS Query" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/10_sysmon_c2_domain_dns_event22.png" />
+<img width="1366" height="724" alt="image" src="https://github.com/user-attachments/assets/4270ddcb-f23a-4e39-b1de-bc62e8479d1a" />
 
 *Sysmon Event ID 22 — QueryName: hkfasfsafg.click → QueryResults: 193.46.217.4 — DNS resolution confirms full C2 infrastructure*
 
@@ -227,17 +228,17 @@ Crucially, the flag `THM{it_was_me!}` was found in `sarah.miller`'s PowerShell h
 **Key insight**: PowerShell history survives reboots, covers all sessions, and captures commands invisible to Sysmon Event ID 1 — checking every active user's history file is essential in Windows investigations.
 
 #### 📸 Screenshot 11 — Administrator PowerShell History: `Get-ComputerInfo` First Command
-<img width="1366" height="728" alt="PowerShell First Command" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/11_powershell_get_computerinfo.png" />
+<img width="1366" height="722" alt="image" src="https://github.com/user-attachments/assets/2b96bcb4-c9ff-4c66-9206-35e13d952a0d" />
 
 *Administrator ConsoleHost_history.txt — Get-ComputerInfo highlighted as first command — system enumeration post-compromise*
 
 #### 📸 Screenshot 12 — PowerShell History File Properties: Created May 18, 2025
-<img width="1366" height="728" alt="PowerShell History Creation Date" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/12_powershell_history_creation_date.png" />
+<img width="1366" height="724" alt="image" src="https://github.com/user-attachments/assets/6d8d75a8-4db4-4e04-bc3f-073ed93f0a57" />
 
 *ConsoleHost_history Properties — Created: Sunday, May 18, 2025, 8:49:26 PM — confirms when Administrator first ran PowerShell*
 
 #### 📸 Screenshot 13 — sarah.miller PowerShell History: Flag `THM{it_was_me!}` Recovered
-<img width="1366" height="728" alt="Flag in PowerShell History" src="https://github.com/ugbomakyrian5-web/windows-logging-soc-lab/blob/main/screenshots/13_powershell_flag_sarah_miller.png" />
+<img width="1366" height="722" alt="image" src="https://github.com/user-attachments/assets/3e7a4103-55ab-4e91-91f3-b08a29bce08a" />
 
 *sarah.miller ConsoleHost_history.txt — echo "THM{it_was_me!}" > flag.txt — flag confirmed, full attacker activity reconstructed*
 
